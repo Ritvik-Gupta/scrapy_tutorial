@@ -34,7 +34,9 @@ class FlipkartIphonesSpider(scrapy.Spider):
 
         # Context Functions to fetch one field which requires parsing
         def extract_total_reviews():
-            reviews_str = response.css("span._13vcmD + span::text").get().strip()
+            reviews_str = (
+                response.css("span._13vcmD + span::text").get(default="0").strip()
+            )
             # As the Reviews fetched contains redundant "Reviews" string
             # remove it and convert to integer
             return int(reviews_str[: reviews_str.index(" Reviews")].replace(",", ""))
@@ -42,7 +44,7 @@ class FlipkartIphonesSpider(scrapy.Spider):
         def extract_price():
             price = 0
 
-            price_str = response.css("div._30jeq3._16Jk6d::text").get()
+            price_str = response.css("div._30jeq3._16Jk6d::text").get(default="0")
             # The Price is of format "$ XXXX" and we only are interested in
             # the actual amount in integer. Also UNICODE '$' is hard to parse in CSV
             match_first_digit = re.search(r"\d", price_str)
@@ -57,7 +59,7 @@ class FlipkartIphonesSpider(scrapy.Spider):
             "Image URL": image_url,  # Context Arguments passed from
             "Phone URL": phone_url,  # Parent caller
             "Name": response.css("h1 span.B_NuCI::text").get(default="iPhone").strip(),
-            "Rating": float(response.css("div._3LWZlK::text").get().strip()),
+            "Rating": float(response.css("div._3LWZlK::text").get(default="0").strip()),
             "Total Reviews": extract_total_reviews(),
             "Price": extract_price(),
             "Colors": str(
