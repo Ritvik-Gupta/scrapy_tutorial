@@ -6,7 +6,7 @@
 | ------------------- | ------------------ |
 | Name                | Ritvik Gupta       |
 | Registration Number | 19BCE0397          |
-| Assignment          | 4th - Web Scraping |
+| Assignment          | 5th - Web Scraping |
 
 Web Scraped data includes the following attributes for both phone types:
 
